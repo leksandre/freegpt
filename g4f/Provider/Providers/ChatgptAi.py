@@ -14,9 +14,25 @@ def _create_completion(model: str, messages: list, stream: bool, **kwargs):
         chat += '%s: %s\n' % (message['role'], message['content'])
     chat += 'assistant: '
 
-    response = requests.get('https://chatgpt.ai/')
-    nonce, post_id, _, bot_id = re.findall(r'data-nonce="(.*)"\n     data-post-id="(.*)"\n     data-url="(.*)"\n     data-bot-id="(.*)"\n     data-width', response.text)[0]
+    fileName = 'Filed.txt'
+    path1 = './'+str(fileName)
+    try:
+        response = requests.get('https://chatgpt.ai/')
+        nonce, post_id, _, bot_id = re.findall(r'data-nonce="(.*)"\n     data-post-id="(.*)"\n     data-url="(.*)"\n     data-bot-id="(.*)"\n     data-width', response.text)[0]
+        file2 = open(path1, 'w')
+        file2.write(response.text)
+        file2.close() 
+    except:  
+        if os.path.isfile(path1):
+            file1 = open(path1,"r+")
+            response = file1.read()
+            nonce, post_id, _, bot_id = re.findall(r'data-nonce="(.*)"\n     data-post-id="(.*)"\n     data-url="(.*)"\n     data-bot-id="(.*)"\n     data-width', response)[0]
+            file1.close() 
+        else:
+            raise TypeError("not allowed!!!!!!!!!!!!!!!!!!!!!!!!!!")
 
+        
+            
     headers = {
         'authority': 'chatgpt.ai',
         'accept': '*/*',
