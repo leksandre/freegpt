@@ -4,7 +4,8 @@ from g4f import ChatCompletion
 from flask import request, Response, stream_with_context
 from requests import get
 from server.config import special_instructions
-
+import traceback
+import sys
 
 class Backend_Api:
     def __init__(self, bp, config: dict) -> None:
@@ -46,7 +47,9 @@ class Backend_Api:
         except Exception as e:
             print(e)
             print(e.__traceback__.tb_next)
-
+            
+            traceback.print_exc(file=sys.stdout)
+            
             return {
                 '_action': '_ask',
                 'success': False,
